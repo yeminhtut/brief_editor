@@ -107,6 +107,7 @@ class Mentions {
             return this.close(null);
         }
         this.query = this.quill.getText(this.atIndex + 1, sel - this.atIndex - 1);
+        console.warn('hello')
         // TODO: Should use fuse.js or similar fuzzy-matcher
         const users = this.users
               .filter(u => u.name.startsWith(this.query))
@@ -163,7 +164,7 @@ class Mentions {
             this.quill.deleteText(this.atIndex, this.query.length + 1, Quill.sources.USER);
             this.quill.insertText(this.atIndex, "@" + name, "mention", id, Quill.sources.USER);
             this.quill.insertText(this.atIndex + name.length + 1, " ", 'mention', false, Quill.sources.USER);
-            this.quill.setSelection(this.atIndex + name.length + 1, 0, Quill.sources.SILENT);
+            this.quill.setSelection(this.atIndex + name.length + 2, 0, Quill.sources.SILENT);
         }
         this.quill.focus();
         this.open = false;
