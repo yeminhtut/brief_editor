@@ -107,7 +107,6 @@ class Mentions {
             return this.close(null);
         }
         this.query = this.quill.getText(this.atIndex + 1, sel - this.atIndex - 1);
-        console.warn('hello')
         // TODO: Should use fuse.js or similar fuzzy-matcher
         const users = this.users
               .filter(u => u.name.startsWith(this.query))
