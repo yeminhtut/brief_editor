@@ -1,20 +1,27 @@
 <html ng-app="myApp">
 <head>
 	<title>Brief</title>
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link href="https://cdn.quilljs.com/1.2.2/quill.snow.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
 	<div class="container"  ng-controller="mainController">
-		<ng-quill-editor ng-model="title"></ng-quill-editor>
-		<div ng-bind-html="title"></div>
+		<div class="row">
+			<div class="col col-md-6">
+				<ng-quill-editor ng-model="content"></ng-quill-editor>
+			</div>
+			<div class="col col-md-6">
+				<h3>Preiveiw</h3>
+				<div ng-bind-html="content"></div>
+			</div>
+		</div>
 	</div>
 	<script src="bower_components/angular/angular.js"></script>
 	<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
 	<script src="js/sampleEmoji.js"></script>
 	<script src="js/emoji.js"></script>
 	<script src="node_modules/quill/dist/quill.js"></script>
-	<script src="js/mention.js"></script>
 	<script src="js/extend.quill.js"></script>
 	<script src="js/ng-quill.js"></script>
 	<script src="js/app.js"></script>

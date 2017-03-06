@@ -83,7 +83,6 @@ class Mentions {
         }
         this.quill.insertText(range.index, "@", "mention", "0", Quill.sources.USER);
         const atSignBounds = this.quill.getBounds(range.index);
-        console.log(atSignBounds);
         this.quill.setSelection(range.index + 1, Quill.sources.SILENT);
         
         this.atIndex = range.index;
@@ -175,8 +174,6 @@ class Mentions {
 
 
 Quill.register('modules/mentions', Mentions);
-
-
 
 
 

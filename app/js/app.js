@@ -2,7 +2,8 @@ var app = angular.module("myApp",['ngQuill','ngSanitize']);
 
 app.controller('mainController',
 	function mainController($scope){
-		$scope.title = '';
+		$scope.content = '';
+		$scope.comment = '';
 	}
 );
 
@@ -19,7 +20,8 @@ app.config(['ngQuillConfigProvider', function (ngQuillConfigProvider) {
                 'emoji': function() {}
             }
     }
-	ngQuillConfigProvider.set({ placeholder: false ,
+	ngQuillConfigProvider.set({ 
+		placeholder: 'Compose an epic...' ,
 	    modules: {
 	        toolbar: toolbarOptions,
 	        emoji: true,

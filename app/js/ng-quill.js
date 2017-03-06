@@ -95,12 +95,11 @@
     template: '<div class="ng-hide quill-editor" ng-show="$ctrl.ready"><ng-transclude ng-transclude-slot="toolbar"></ng-transclude></div>',
     controller: ['$scope', '$element', '$timeout', '$transclude', 'ngQuillConfig', function ($scope, $element, $timeout, $transclude, ngQuillConfig) {
       var config = {},
-        content,
-        editorElem,
-        modelChanged = false,
-        editorChanged = false,
-        editor
-
+          content,
+          editorElem,
+          modelChanged = false,
+          editorChanged = false,
+          editor;
       this.validate = function (text) {
         if (this.maxLength) {
           if (text.length > this.maxLength + 1) {
