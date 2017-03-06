@@ -1,4 +1,7 @@
-# brief_editor
-# npm install
-# bower install
-# sh server.sh
+## Installation
+
+`npm install` and `bower install`.
+
+## Web Server Run
+
+run `sh server.sh`
