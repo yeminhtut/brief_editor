@@ -35,4 +35,4 @@ app.config(['ngQuillConfigProvider', function (ngQuillConfigProvider) {
 	        }
 	    }
 	  });
-	}]);
+}]);

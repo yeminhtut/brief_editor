@@ -84,7 +84,7 @@
       'onSelectionChanged': '&?',
       'ngModel': '<',
       'maxLength': '<',
-      'minLength': '<'
+      'minLength': '<',
     },
     require: {
       ngModelCtrl: 'ngModel'
@@ -100,6 +100,8 @@
           modelChanged = false,
           editorChanged = false,
           editor;
+
+      var isNotToolbar = $element[0].hasAttribute("no-tool-bar");
       this.validate = function (text) {
         if (this.maxLength) {
           if (text.length > this.maxLength + 1) {
@@ -168,6 +170,10 @@
           config.modules.toolbar = container.find('ng-quill-toolbar').children()[0]
         }
 
+        if (isNotToolbar) {
+          config.modules.toolbar = false;
+        }
+        
         container.append($editorElem);
 
         container.append("<ul class='completions'></ul>")

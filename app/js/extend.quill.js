@@ -178,7 +178,12 @@ Quill.register('modules/mentions', Mentions);
 
 Quill.register('modules/emoji', function(quill, options) {
     var toolbar = quill.getModule('toolbar');
-    toolbar.addHandler('emoji', checkPalatteExist);
+    var isToolbar = toolbar !== undefined;
+    
+    if (isToolbar) {
+        toolbar.addHandler('emoji', checkPalatteExist);
+    };
+    
 
     function checkPalatteExist(){
         var elementExists = document.getElementById("emoji-palette");

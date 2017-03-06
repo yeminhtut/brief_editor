@@ -8,11 +8,19 @@
 <body>
 	<div class="container"  ng-controller="mainController">
 		<div class="row">
-			<ng-quill-editor ng-model="content"></ng-quill-editor>
+			<div class="col-md-6">
+				<h3>Editor with toolbar</h3>
+				<ng-quill-editor ng-model="content" ></ng-quill-editor>
+			</div>
+			<div class="col-md-6">
+				<h3>Editor without toolbar</h3>
+				<ng-quill-editor ng-model="comment" no-tool-bar></ng-quill-editor>
+			</div>
 		</div>
 		<div class="row">
-			<h3>Preiveiw</h3>
+			<h3>Preiview</h3>
 			<div ng-bind-html="content"></div>
+			<div ng-bind-html="comment"></div>
 		</div>
 	</div>
 	<script src="bower_components/angular/angular.js"></script>
