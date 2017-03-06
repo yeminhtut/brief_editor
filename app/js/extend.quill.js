@@ -21,7 +21,7 @@ Quill.register('modules/emoji', function(quill, options) {
         toolbar_container = document.querySelector('.ql-toolbar');
         toolbar_container.appendChild(emoji_palatte_container);
         emoji_palatte_container.id = 'emoji-palette'; 
-        emoji_palatte_container.style.right= rect.right - 100;
+        //emoji_palatte_container.style.right= rect.right - 100;
 
         emojiCollection = emojiOne;
         showEmojiList(emojiCollection);
@@ -42,11 +42,8 @@ Quill.register('modules/emoji', function(quill, options) {
 	                customButton.addEventListener('click', function() {
                         if (range) {
                            quill.insertText(range.index, customButton.innerHTML);
-                           console.log(range);
                            quill.setSelection(range.index+4, 0);
                            range.index = range.index+4;
-                           console.log('current cursor point is');
-                           console.log(quill.getSelection());
                            checkPalatteExist();
                         }
 	                });
@@ -98,13 +95,9 @@ Quill.register('modules/emoji', function(quill, options) {
 
 Quill.register('modules/typing', function(quill, options) {
     quill.on('text-change', function(delta, oldDelta, source) {
+        console.log(quill.getText());
         if (source == 'user') {
-            setTimeout(function() {
-                document.getElementById("typing").innerHTML = "Typing...";
-            }, 0);
-            setTimeout(function() {
-                document.getElementById("typing").innerHTML = "";
-            }, 100);
+            document.getElementById("typing").innerHTML = quill.getText();
         }
     });
 });

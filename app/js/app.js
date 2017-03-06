@@ -23,6 +23,19 @@ app.config(['ngQuillConfigProvider', function (ngQuillConfigProvider) {
 	    modules: {
 	        toolbar: toolbarOptions,
 	        emoji: true,
+	        mentions: {
+	          container: '.completions',
+	          users: [
+	            {id: 1, name: 'Christy'},
+	            {id: 2, name: 'Micha'},
+	            {id: 3, name: 'Sima'},
+	            {id: 4, name: 'Coreen'},
+	            {id: 5, name: 'Aimee'},
+	            {id: 6, name: 'Brant'},
+	            {id: 7, name: 'Maryetta'},
+	            {id: 8, name: 'Nicol'},
+	          ]
+	        }
 	    }
 	  });
 	}]);

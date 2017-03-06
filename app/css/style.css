@@ -2,19 +2,11 @@
   max-width: 720px;
   margin:0px auto;
 }
-body {
-  padding: 2em;
+.quill-editor{
+    position: relative;
 }
-
-#editor .ql-editor {
-    
-}
-
-#editor p {margin-top: 0}
-
-#editor .mention {
-    font-weight: bold;
-    color: blue;
+.quill-editor .mention {
+    color: #0366d6;
 }
 
 .completions {

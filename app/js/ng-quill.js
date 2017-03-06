@@ -45,7 +45,7 @@
     }
 
     this.set = function (customConf) {
-      customConf = customConf || {}
+      customConf = customConf || {}
 
       if (customConf.modules) {
         config.modules = customConf.modules
@@ -92,7 +92,7 @@
     transclude: {
       'toolbar': '?ngQuillToolbar'
     },
-    template: '<div class="ng-hide" ng-show="$ctrl.ready"><ng-transclude ng-transclude-slot="toolbar"></ng-transclude></div>',
+    template: '<div class="ng-hide quill-editor" ng-show="$ctrl.ready"><ng-transclude ng-transclude-slot="toolbar"></ng-transclude></div>',
     controller: ['$scope', '$element', '$timeout', '$transclude', 'ngQuillConfig', function ($scope, $element, $timeout, $transclude, ngQuillConfig) {
       var config = {},
         content,
@@ -169,7 +169,9 @@
           config.modules.toolbar = container.find('ng-quill-toolbar').children()[0]
         }
 
-        container.append($editorElem)
+        container.append($editorElem);
+
+        container.append("<ul class='completions'></ul>")
 
         editor = new Quill(editorElem, config)
 

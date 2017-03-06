@@ -2,6 +2,6 @@
 
 `npm install` and `bower install`.
 
-## Web Server Run
+## Run Web Server 
 
 run `sh server.sh`
