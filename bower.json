@@ -1,0 +1,21 @@
+{
+  "name": "demoapp",
+  "description": "This project is a sample application demonstrating a more fully developed realistic single page angular application.",
+  "main": "index.js",
+  "authors": [
+    "Joe Eames & Jim Cooper"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/yeminhtut/brief_editor",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "=1.5.8",
+    "ngQuill": "ng-quill#^2.2.5"
+  }
+}

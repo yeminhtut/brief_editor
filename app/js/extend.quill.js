@@ -96,4 +96,17 @@ Quill.register('modules/emoji', function(quill, options) {
         }
 });
 
+Quill.register('modules/typing', function(quill, options) {
+    quill.on('text-change', function(delta, oldDelta, source) {
+        if (source == 'user') {
+            setTimeout(function() {
+                document.getElementById("typing").innerHTML = "Typing...";
+            }, 0);
+            setTimeout(function() {
+                document.getElementById("typing").innerHTML = "";
+            }, 100);
+        }
+    });
+});
+
 

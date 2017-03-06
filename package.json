@@ -7,12 +7,14 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon /scripts/web-server.js"
   },
   "author": "Joe Eames & Jim Cooper",
   "license": "ISC",
   "dependencies": {
     "body-parser": "1.13.1",
-    "express": "4.13.0"
+    "express": "4.13.0",
+    "nodemon": "^1.11.0"
   }
 }
