@@ -1,17 +1,17 @@
 const Inline = Quill.import('blots/inline');
 
 class MentionBlot extends Inline {
-    static create(id) {
+    static create(label) {
         const node = super.create();
-        node.dataset.id = id;
+        node.dataset.label = label;
         return node;
     }
     static formats(node) {
-        return node.dataset.id;
+        return node.dataset.label;
     }
     format(name, value) {
         if (name === "mention" && value) {
-            this.domNode.dataset.id = value;
+            this.domNode.dataset.label = value;
         } else {
             super.format(name, value);
         }
@@ -109,8 +109,8 @@ class Mentions {
         this.query = this.quill.getText(this.atIndex + 1, sel - this.atIndex - 1);
         // TODO: Should use fuse.js or similar fuzzy-matcher
         const users = this.users
-              .filter(u => u.name.startsWith(this.query))
-              .sort((u1, u2) => u1.name > u2.name);
+              .filter(u => u.username.startsWith(this.query))
+              .sort((u1, u2) => u1.username > u2.username);
         this.renderCompletions(users);
     }
 
@@ -141,7 +141,7 @@ class Mentions {
             const li = h('li', {},
                          h('button', {type: "button"},
                            h('span', {className: "matched"}, "@" + this.query),
-                           h('span', {className: "unmatched"}, user.name.slice(this.query.length))));
+                           h('span', {className: "unmatched"}, user.username.slice(this.query.length))));
             this.container.appendChild(li);
             buttons[i] = li.firstChild;
             // Events will be GC-ed with button on each re-render:
@@ -159,11 +159,11 @@ class Mentions {
         this.quill.off('selection-change', this.onSelectionChange);
         this.quill.off('text-change', this.onTextChange);
         if (value) {
-            const {id, name} = value;
+            const {label, username} = value;
             this.quill.deleteText(this.atIndex, this.query.length + 1, Quill.sources.USER);
-            this.quill.insertText(this.atIndex, "@" + name, "mention", id, Quill.sources.USER);
-            this.quill.insertText(this.atIndex + name.length + 1, " ", 'mention', false, Quill.sources.USER);
-            this.quill.setSelection(this.atIndex + name.length + 2, 0, Quill.sources.SILENT);
+            this.quill.insertText(this.atIndex, "@" + username, "mention", label, Quill.sources.USER);
+            this.quill.insertText(this.atIndex + username.length + 1, " ", 'mention', false, Quill.sources.USER);
+            this.quill.setSelection(this.atIndex + username.length + 2, 0, Quill.sources.SILENT);
         }
         this.quill.focus();
         this.open = false;

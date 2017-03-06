@@ -7,7 +7,9 @@ body{
 .mention {
     color: #0366d6;
 }
-
+.ql-container{
+    max-height: 400px;
+}
 .completions {
     list-style: none;
     margin: 0;
