@@ -1,4 +1,4 @@
-var app = angular.module("myApp",['ngQuill']);
+var app = angular.module("myApp",['ngQuill','ngSanitize']);
 
 app.controller('mainController',
 	function mainController($scope){

@@ -5,7 +5,7 @@
 .quill-editor{
     position: relative;
 }
-.quill-editor .mention {
+.mention {
     color: #0366d6;
 }
 

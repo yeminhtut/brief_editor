@@ -12,16 +12,16 @@ Quill.register('modules/emoji', function(quill, options) {
     }
 
     function showEmojiPalatte() {
-        var bodyRect = document.body.getBoundingClientRect();
         toolbar_emoji_element = document.querySelector('.ql-emoji');
-        rect = toolbar_emoji_element.getBoundingClientRect();
-        
         let range = quill.getSelection();
+        const atSignBounds = quill.getBounds(range.index);
+        
         emoji_palatte_container = document.createElement('div');
         toolbar_container = document.querySelector('.ql-toolbar');
         toolbar_container.appendChild(emoji_palatte_container);
-        emoji_palatte_container.id = 'emoji-palette'; 
-        //emoji_palatte_container.style.right= rect.right - 100;
+        emoji_palatte_container.id = 'emoji-palette';
+        emoji_palatte_container.style.top= atSignBounds.top + 60; 
+        emoji_palatte_container.style.left= atSignBounds.left;
 
         emojiCollection = emojiOne;
         showEmojiList(emojiCollection);
