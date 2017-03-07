@@ -173,10 +173,11 @@
         if (isNotToolbar) {
           config.modules.toolbar = false;
         }
-        
+
         container.append($editorElem);
 
         container.append("<ul class='completions'></ul>")
+        container.append("<ul class='emoji_completions'></ul>")
 
         editor = new Quill(editorElem, config)
 

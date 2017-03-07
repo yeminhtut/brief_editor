@@ -18,9 +18,11 @@
 			</div>
 		</div>
 		<div class="row">
-			<h3>Preiview</h3>
+			<div class="col col-md-12">
+				<h3>Preiview</h3>
 			<div ng-bind-html="content"></div>
 			<div ng-bind-html="comment"></div>
+			</div>
 		</div>
 	</div>
 	<script src="bower_components/angular/angular.js"></script>
@@ -28,8 +30,10 @@
 	<script src="js/sampleEmoji.js"></script>
 	<script src="js/emoji.js"></script>
 	<script src="node_modules/quill/dist/quill.js"></script>
+	<script src="node_modules/fuse.js/src/fuse.js"></script>
 	<script src="js/extend.quill.js"></script>
 	<script src="js/ng-quill.js"></script>
+	<script src="js/inlineemoji.js"></script>
 	<script src="js/app.js"></script>
 </body>
 </html>
