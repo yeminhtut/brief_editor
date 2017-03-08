@@ -24,8 +24,7 @@ app.config(['ngQuillConfigProvider', function (ngQuillConfigProvider) {
 		placeholder: 'Compose an epic...' ,
 	    modules: {
 	        toolbar: toolbarOptions,
-	        emoji: true,
-	        short_name_emoji: true,
+	        toolbar_emoji: true,
 	        short_name_emoji: {
 	          	container: '.emoji_completions',
 				emojis: [

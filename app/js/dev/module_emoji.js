@@ -1,40 +1,4 @@
-const Inline = Quill.import('blots/inline');
-
-class MentionBlot extends Inline {
-    static create(id) {
-        const node = super.create();
-        node.dataset.id = id;
-        return node;
-    }
-    static formats(node) {
-        return node.dataset.id;
-    }
-    format(name, value) {
-        if (name === "mention" && value) {
-            this.domNode.dataset.id = value;
-        } else {
-            super.format(name, value);
-        }
-    }
-    
-    formats() {
-        const formats = super.formats();
-        formats['mention'] = MentionBlot.formats(this.domNode);
-        return formats;
-    }
-}
-
-MentionBlot.blotName = "mention";
-MentionBlot.tagName = "SPAN";
-MentionBlot.className = "mention";
-
-
-Quill.register({
-    'formats/mention': MentionBlot
-});
-
-
-const h = (tag, attrs, ...children) => {
+const e = (tag, attrs, ...children) => {
     const elem = document.createElement(tag);
     Object.keys(attrs).forEach(key => elem[key] = attrs[key]);
     children.forEach(child => {
@@ -45,12 +9,26 @@ const h = (tag, attrs, ...children) => {
     return elem;
 };
 
-class Mentions {
+class ShortNameEmoji {
     constructor(quill, props) {
+        this.fuseOptions = {
+			shouldSort: true,
+			matchAllTokens: true,
+			threshold: 0.3,
+			location: 0,
+			distance: 100,
+			maxPatternLength: 32,
+			minMatchCharLength: 3,
+			keys: [
+				"shortname"
+			]
+		};
+        this.emojiList = emojiOne;
+        this.fuse = new Fuse(this.emojiList, this.fuseOptions);
+    	
         this.quill = quill;
         this.onClose = props.onClose;
         this.onOpen = props.onOpen;
-        this.users = props.users;
         this.container = this.quill.container.parentNode.querySelector(props.container);
         this.container.style.position = "absolute";
         this.container.style.display = "none";
@@ -64,14 +42,20 @@ class Mentions {
 
         quill.keyboard.addBinding({
             // TODO: Once Quill supports using event.key (#1091) use that instead of shift-2
-            key: 50,  // 2
+            key: 186,  // 2
             shiftKey: true,
         }, this.onAtKey.bind(this));
 
         quill.keyboard.addBinding({
-            key: 40,  // ArrowDown
+            key: 39,  // ArrowRight
             collapsed: true,
-            format: ["mention"]
+            format: ["emoji"]
+        }, this.handleArrow.bind(this));
+
+        quill.keyboard.addBinding({
+            key: 40,  // ArrowRight
+            collapsed: true,
+            format: ["emoji"]
         }, this.handleArrow.bind(this));
         // TODO: Add keybindings for Enter (13) and Tab (9) directly on the quill editor
     }
@@ -81,7 +65,7 @@ class Mentions {
         if (range.length > 0) {
             this.quill.deleteText(range.index, range.length, Quill.sources.USER);
         }
-        this.quill.insertText(range.index, "@", "mention", "0", Quill.sources.USER);
+        this.quill.insertText(range.index, ":", "emoji", Quill.sources.USER);
         const atSignBounds = this.quill.getBounds(range.index);
         this.quill.setSelection(range.index + 1, Quill.sources.SILENT);
         
@@ -103,15 +87,17 @@ class Mentions {
 
     update() {
         const sel = this.quill.getSelection().index;
-        if (this.atIndex >= sel) { // Deleted the at character
-            return this.close(null);
-        }
-        this.query = this.quill.getText(this.atIndex + 1, sel - this.atIndex - 1);
-        // TODO: Should use fuse.js or similar fuzzy-matcher
-        const users = this.users
-              .filter(u => u.name.startsWith(this.query))
-              .sort((u1, u2) => u1.name > u2.name);
-        this.renderCompletions(users);
+
+        //Using: fuse.js
+        this.query = this.quill.getText(this.atIndex);
+        this.query = this.query.trim();
+        let emojis = this.fuse.search(this.query);
+        
+        if (emojis.length > 50) { //return only 50
+        	emojis = emojis.slice(0, 40);
+        };
+        
+        this.renderCompletions(emojis);
     }
 
     maybeUnfocus() {
@@ -119,34 +105,40 @@ class Mentions {
       this.close(null);
     }
 
-    renderCompletions(users) {
+    renderCompletions(emojis) {
         while (this.container.firstChild) this.container.removeChild(this.container.firstChild);
-        const buttons = Array(users.length);
+        const buttons = Array(emojis.length);
         this.buttons = buttons;
-        const handler = (i, user) => event => {
-            if (event.key === "ArrowDown" || event.keyCode === 40) {
+        const handler = (i, emoji) => event => {
+            if (event.key === "ArrowRight" || event.keyCode === 39) {
                 event.preventDefault();
                 buttons[Math.min(buttons.length - 1, i + 1)].focus();
-            } else if (event.key === "ArrowUp" || event.keyCode === 38) {
+            } else if (event.key === "ArrowLeft" || event.keyCode === 37) {
                 event.preventDefault();
                 buttons[Math.max(0, i - 1)].focus();
-            } else if (event.key === "Enter" || event.keyCode === 13
+            } 
+            else if (event.key === "ArrowDown" || event.keyCode === 40) {
+                event.preventDefault();
+                buttons[Math.min(buttons.length - 1, i + 1)].focus();
+            }
+            else if (event.key === "Enter" || event.keyCode === 13
                        || event.key === " " || event.keyCode === 32
                        || event.key === "Tab" || event.keyCode === 9) {
                 event.preventDefault();
-                this.close(user);
+                this.close(emoji);
             }
         };
-        users.forEach((user, i) => {
-            const li = h('li', {},
-                         h('button', {type: "button"},
-                           h('span', {className: "matched"}, "@" + this.query),
-                           h('span', {className: "unmatched"}, user.name.slice(this.query.length))));
+        emojis.forEach((emoji, i) => {
+            const li =  h('li', {},
+                        h('button', {type: "button"},
+                        h("span", {className: "ico", innerHTML: this.convert(emoji.unicode) }),
+                        h('span', {className: "matched"}, this.query),
+                        h('span', {className: "unmatched"}, emoji.shortname.slice(this.query.length))));
             this.container.appendChild(li);
             buttons[i] = li.firstChild;
             // Events will be GC-ed with button on each re-render:
-            buttons[i].addEventListener('keydown', handler(i, user));
-            buttons[i].addEventListener("mousedown", () => this.close(user));
+            buttons[i].addEventListener('keydown', handler(i, emoji));
+            buttons[i].addEventListener("mousedown", () => this.close(emoji));
             buttons[i].addEventListener("focus", () => this.focusedButton = i);
             buttons[i].addEventListener("unfocus", () => this.focusedButton = null);
         });
@@ -159,23 +151,23 @@ class Mentions {
         this.quill.off('selection-change', this.onSelectionChange);
         this.quill.off('text-change', this.onTextChange);
         if (value) {
-            const {id, name} = value;
+            const {name, unicode, shortname} = value;
+            console.log(value);
+            let emoji_icon_html = h("span", {className: "ico", innerHTML: this.convert(unicode) });
+            let emoji_icon = emoji_icon_html.innerHTML;
             this.quill.deleteText(this.atIndex, this.query.length + 1, Quill.sources.USER);
-            this.quill.insertText(this.atIndex, "@" + name, "mention", id, Quill.sources.USER);
-            this.quill.insertText(this.atIndex + name.length + 1, " ", 'mention', false, Quill.sources.USER);
-            this.quill.setSelection(this.atIndex + name.length + 2, 0, Quill.sources.SILENT);
+            this.quill.insertText(this.atIndex, emoji_icon, "emoji", unicode, Quill.sources.USER);
+            this.quill.insertText(this.atIndex + emoji_icon.length + 2, " ", 'emoji', false, Quill.sources.USER);
+            this.quill.setSelection(this.atIndex + emoji_icon.length + 2, 0, Quill.sources.SILENT);
         }
         this.quill.focus();
         this.open = false;
         this.onClose && this.onClose(value);
     }
 
+    convert(input){
+            var output = '&#x'+input+';';
+            return output;
+        }
 }
-
-
-Quill.register('modules/mentions', Mentions);
-
-
-
-
-
+Quill.register('modules/short_name_emoji', ShortNameEmoji);

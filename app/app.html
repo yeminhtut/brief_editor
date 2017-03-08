@@ -13,14 +13,18 @@
             <ul class="completions"></ul>
             <ul class="emoji_completions"></ul>
         </div>
-        
+        <div class="container">
+
+        </div>        
 
 <script src="js/sampleEmoji.js"></script>
 <script src="js/emoji.js"></script>
 <script src="node_modules/quill/dist/quill.js"></script>
 <script src="node_modules/fuse.js/src/fuse.js"></script>
-<script src="js/extend.quill.js"></script>
-<script src="js/test.js"></script>
+<script src="js/dev/main.js"></script>
+<script src="js/dev/module_emoji.js"></script>
+<script src="js/dev/module_mention.js"></script>
+<script src="js/dev/module_toolbar_emoji.js"></script>
 
 <script type="text/javascript">
 	var toolbarOptions = {
@@ -30,66 +34,28 @@
                 [{"list": "ordered"}, {"list": "bullet"}],
                 [{"color": []}, {"background": []}],
                 ["emoji"]
-            ],
-            handlers: {
-                'emoji': function() {}
-            }
+            ]
     }
- //    var quill = new Quill('#quill-editor', {
-	//     modules: {
-	//     	toolbar: toolbarOptions,
-	//     	// emoji: true,
- //      //       short_name_emoji: {
- //      //           container: '.emoji_completions',
- //      //           emojis: [
- //      //               {name: 'grinning', unicode: '1f600',shortname:":grinning:"}, 
- //      //               {name: 'grimacing', unicode: '1f62c',shortname:":grimacing:"}, 
- //      //               {name: 'smile', unicode: '1f604',shortname:":smile:"}, 
- //      //               {name: 'joy', unicode: '1f602',shortname:":joy:"}, 
- //      //               {name: 'smiley', unicode: '1f603',shortname:":smiley:"}, 
- //      //               {name: 'laughing', unicode: '1f606',shortname:":laughing:"}, 
- //      //               {name: 'innocent', unicode: '1f607',shortname:":innocent:"}, 
- //      //               {name: 'wink', unicode: '1f609',shortname:":wink:"}, 
- //      //               {name: 'disappointed', unicode: '1f61e',shortname:":disappointed:"}, 
- //      //               {name: 'worried', unicode: '1f61f',shortname:":worried:"}, 
- //      //               {name: 'angry', unicode: '1f620',shortname:":angry:"}, 
- //      //               {name: 'confused', unicode: '1f615',shortname:":confused:"}, 
- //      //               {name: 'tired_face', unicode: '1f62b',shortname:":tired_face:"}, 
- //      //               {name: 'scream', unicode: '1f631',shortname:":scream:"}, 
- //      //           ]
- //      //       },
-	//         mentions: {
-	//           container: '.completions',
-	//           users: [
-	//             {label:'Joe', username: 'Joe'},
- //                {label:'Mike', username: 'Mike'},
- //                {label:'Diane', username: 'Diane'}
-	//           ]
-	//         }
-	//     },
-	//     placeholder: 'Compose an epic...',
- //        theme: 'snow'
- //    });
+    var quill = new Quill('#quill-editor', {
+	    modules: {
+	    	toolbar: toolbarOptions,
+	    	toolbar_emoji: true,
+            short_name_emoji: {
+                container: '.emoji_completions',
+            },
+	        mentions: {
+	          container: '.completions',
+	          users: [
+	            {label:'Joe', username: 'Joe'},
+                {label:'Mike', username: 'Mike'},
+                {label:'Diane', username: 'Diane'}
+	          ]
+	        }
+	    },
+	    placeholder: 'Compose an epic...',
+        theme: 'snow'
+    });
 
-
- //    (function() {
- //        var options = {
- //              shouldSort: true,
- //              threshold: 0.6,
- //              location: 0,
- //              distance: 100,
- //              maxPatternLength: 32,
- //              minMatchCharLength: 1,
- //              keys: [
- //                "shortname",
- //                "name"
- //            ]
- //        };
- //        var fuse = new Fuse(emojiOne, options); // "emojiOne" is the item array
- //        var result = fuse.search('g');
- //        console.log(result);
- //        console.log(result[0].shortname);
- //    })();
 </script>
     </body>
 </html>

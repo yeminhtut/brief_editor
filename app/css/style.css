@@ -97,9 +97,9 @@ body{
 }
 #emoji-palette{
     position: absolute;
-    padding: 4px 8px;
+    padding: 4px;
     z-index: 999;
-    background: #f3f6fa;
-    border: solid 1px #dce6f0;
-    max-width: 200px;
+    border-color:#CCC;
+    max-width: 152px;
+    box-shadow: rgba(0,0,0,0.2) 0 2px 8px;
 }
