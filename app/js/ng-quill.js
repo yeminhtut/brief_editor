@@ -16,27 +16,26 @@
   app.provider('ngQuillConfig', function () {
     var config = {
       modules: {
-        toolbar: [
-          ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-          ['blockquote', 'code-block'],
+        toolbar: {
+          container:[
+              ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+              ['blockquote', 'code-block'],
+              [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+              [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
 
-          [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-          [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-          [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
-          [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
-          [{ 'direction': 'rtl' }],                         // text direction
+              [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
 
-          [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
-          [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-          [{ 'font': [] }],
-          [{ 'align': [] }],
-
-          ['clean'],                                         // remove formatting button
-
-          ['link', 'image', 'video']                         // link and image, video
-        ]
+              [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+              [{ 'align': [] }],
+              ["emoji"],
+              ['link', 'image', 'video']                         // link and image, video
+          ],
+          handlers: {'emoji': function() {}}
+        },
+        toolbar_emoji: true,
+        short_name_emoji: true,
+        imageImport: true,
+        imageResize: { displaySize: true},
       },
       theme: 'snow',
       placeholder: 'Insert text here ...',
@@ -175,9 +174,6 @@
         }
 
         container.append($editorElem);
-
-        container.append("<ul class='completions'></ul>")
-        container.append("<ul class='emoji_completions'></ul>")
 
         editor = new Quill(editorElem, config)
 

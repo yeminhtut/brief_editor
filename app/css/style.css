@@ -1,13 +1,13 @@
-body{
+body {
     background: #FFF;
 }
-#quill-editor{
+#quill-editor {
     position: relative;
 }
 .mention {
     color: #0366d6;
 }
-.ql-container{
+.ql-container {
     max-height: 400px;
 }
 .completions {
@@ -23,34 +23,35 @@ body{
     padding: 0;
 }
 .completions > li > button {
-     box-sizing: border-box;
-     height: 2em;
-     padding: .25em .5em;
-     margin: 0;
-     display: block;
-     width: 100%;
-     text-align: left;
-     border: none;
-     background: none;
+    box-sizing: border-box;
+    height: 2em;
+    padding: .25em .5em;
+    margin: 0;
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: none;
+    background: none;
 }
 .completions > li > button:hover {
-            background: #ddd;
+    background: #ddd;
 }
 .completions > li > button:focus {
-            background: #ddd;
-            outline: none;
+    background: #ddd;
+    outline: none;
 }
 .completions > li > button > .matched {
-            font-weight: bold;
-            color: black;
+    font-weight: bold;
+    color: black;
 }
 .completions > li > button > * {
-            vertical-align: "middle";
+    vertical-align: "middle";
 }
 .emoji_completions {
     list-style: none;
     margin: 0;
-    padding: 0;
+    border: 1px solid #84a8cc;
+    padding: 6px;
     background: white;
     border-radius: 2px;
     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
@@ -64,27 +65,30 @@ body{
 }
  .emoji_completions > li > button {
     box-sizing: border-box;
-    height: 2em;
-    padding: .25em .5em;
+    padding: 0.25em;
     margin: 0;
     display: block;
     width: 100%;
     text-align: left;
     border: none;
     background: #efefef;
-    border: 1px solid #DDD;
+    border: 1px solid #2D9EE0;
     border-radius: 5px;
+    text-shadow: 0 1px rgba(0,0,0,.1);
 }
+
 .emoji_completions > li > button:hover {
-            background: #ddd;
+            background: #2D9EE0;
+            color:#FFF;
 }
 .emoji_completions > li > button:focus {
-            background: #ddd;
+            background: #2D9EE0;
             outline: none;
+            color:#FFF;
 }
 .emoji_completions > li > button > .matched {
             font-weight: bold;
-            color: black;
+            /*color: black;*/
 }
 .emoji_completions > li > button > * {
             vertical-align: "middle";
@@ -92,14 +96,48 @@ body{
 .ql-emoji:after {
     content: "😊";
 }
-.ico{
-    margin-right:10px;
+.ico {
+    margin-right: 10px;
 }
-#emoji-palette{
+#emoji-palette {
     position: absolute;
-    padding: 4px;
+    max-width: 212px;
     z-index: 999;
-    border-color:#CCC;
-    max-width: 152px;
-    box-shadow: rgba(0,0,0,0.2) 0 2px 8px;
+    border: 1px solid #66afe9;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 2px 8px;
+}
+.bem {
+    font-size: 24px;
+    width: 34px;
+    display: inline-block;
+    text-align: center;
+}
+#tab-filters {
+    width: 210px;
+    margin: 0px auto;
+    margin-top: 20px;
+}
+.tab {
+    font-size: 24px;
+    display: inline-table;
+    text-align: center;
+    width: 30px;
+    height: 100%;
+    min-height: 30px;
+}
+#tab-toolbar {
+    background-color: #e5e5e5;
+}
+#tab-toolbar ul{
+    margin:0px;
+    padding:0px;
+}
+.active {
+    background-color: #FFF;
+}
+#tab-panel {
+    max-height: 200px;
+    overflow-y: scroll;
+    padding: 2px;
+    background: #FFF;
 }

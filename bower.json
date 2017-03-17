@@ -16,7 +16,8 @@
   ],
   "dependencies": {
     "angular": "=1.6.2",
-    "angular-sanitize": "^1.6.2"
+    "angular-sanitize": "^1.6.2",
+    "emojione": "^2.2.7"
   },
   "resolutions": {
     "angular": "1.6.2"
