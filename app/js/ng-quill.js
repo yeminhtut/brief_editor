@@ -36,6 +36,9 @@
         short_name_emoji: true,
         imageImport: true,
         imageResize: { displaySize: true},
+        mentions: {
+          users: []
+        }
       },
       theme: 'snow',
       placeholder: 'Insert text here ...',
@@ -84,6 +87,7 @@
       'ngModel': '<',
       'maxLength': '<',
       'minLength': '<',
+      'mention': '='
     },
     require: {
       ngModelCtrl: 'ngModel'
@@ -101,6 +105,8 @@
           editor;
 
       var isNotToolbar = $element[0].hasAttribute("no-tool-bar");
+      var isMention = $element[0].hasAttribute("mention");
+
       this.validate = function (text) {
         if (this.maxLength) {
           if (text.length > this.maxLength + 1) {
@@ -171,6 +177,13 @@
 
         if (isNotToolbar) {
           config.modules.toolbar = false;
+        }
+
+        if (isMention) {
+          console.warn(config.modules.mentions);
+          let userList= $scope.$parent.userList;
+          config.modules.mentions.users = $scope.$parent.userList;
+          console.warn(userList);
         }
 
         container.append($editorElem);

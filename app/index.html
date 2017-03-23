@@ -7,15 +7,16 @@
 </head>
 <body>
 	<div class="container"  ng-controller="mainController">
-		<div class="row">
-			<div class="col-md-6">
-				<h3>Editor with toolbar</h3>
-				<ng-quill-editor ng-model="content" ></ng-quill-editor>
-			</div>
-			<div class="col-md-6">
-				<h3>Editor without toolbar</h3>
-				<ng-quill-editor ng-model="comment" no-tool-bar></ng-quill-editor>
-			</div>
+        {{userList}}
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Editor with toolbar</h3>
+                <ng-quill-editor ng-model="content"></ng-quill-editor>
+            </div>
+            <div class="col-md-6">
+                <h3>Editor without toolbar</h3>
+                <ng-quill-editor ng-model="comment" no-tool-bar mention='userList'></ng-quill-editor>
+            </div>
 		</div>
 		<div class="row">
 			<div class="col col-md-12">
