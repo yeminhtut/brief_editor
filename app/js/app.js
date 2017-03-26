@@ -4,11 +4,18 @@ app.controller('mainController',
 	function mainController($scope){
 		$scope.content = '';
 		$scope.comment = '';
+		$scope.userList =  {
+	              	users: [
+	                  {label:'Joe', username: 'Joe'},
+	                  {label:'Mike', username: 'Mike'},
+	                  {label:'Diane', username: 'Diane'}
+	              	]
+	            }
 	}
 );
 
 app.config(['ngQuillConfigProvider', function (ngQuillConfigProvider) {
-	toolbarOptions = {
+	/*toolbarOptions = {
             container: [
                       ['bold', 'italic', 'underline', 'strike'],
                       ['emoji']       
@@ -32,4 +39,5 @@ app.config(['ngQuillConfigProvider', function (ngQuillConfigProvider) {
 	            } 
 	    }
 	  });
+    */
 }]);
