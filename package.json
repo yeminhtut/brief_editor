@@ -17,6 +17,7 @@
     "express": "4.13.0",
     "fuse.js": "^2.6.2",
     "nodemon": "^1.11.0",
-    "quill": "^1.2.2"
+    "quill": "^1.2.2",
+    "quill-image-drop-module": "^1.0.2"
   }
 }

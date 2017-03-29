@@ -4,7 +4,7 @@
   } else if (typeof exports === 'object') {
     module.exports = factory(require('quill'))
   } else {
-    root.Requester = factory(root.Quill)
+    root.Requester = factory(root.Quill,root.TableTrick)
   }
 }(this, function (Quill) {
   'use strict'
@@ -32,20 +32,22 @@
           ],
           handlers: {'emoji': function() {}}
         },
-        toolbar_emoji: true,
-        short_name_emoji: true,
-        imageImport: true,
-        imageResize: { displaySize: true},
-        mentions: {
-          users: []
-        }
+          pasteHandler: true,
+          linkImport: true,
+          toolbar_emoji: true,
+          short_name_emoji: true,
+          imageImport: true,
+          imageResize: {
+            displaySize: true
+          },
+          mentions: {users: []}  
       },
       theme: 'snow',
       placeholder: 'Insert text here ...',
       readOnly: false,
       boundary: document.body
     }
-
+    
     this.set = function (customConf) {
       customConf = customConf || {}
 
@@ -87,7 +89,6 @@
       'ngModel': '<',
       'maxLength': '<',
       'minLength': '<',
-      'mention': '='
     },
     require: {
       ngModelCtrl: 'ngModel'
@@ -96,7 +97,7 @@
       'toolbar': '?ngQuillToolbar'
     },
     template: '<div class="ng-hide quill-editor" ng-show="$ctrl.ready"><ng-transclude ng-transclude-slot="toolbar"></ng-transclude></div>',
-    controller: ['$scope', '$element', '$timeout', '$transclude', 'ngQuillConfig', function ($scope, $element, $timeout, $transclude, ngQuillConfig) {
+    controller: ['$scope', '$element', '$timeout', '$transclude', 'ngQuillConfig','$attrs', function ($scope, $element, $timeout, $transclude, ngQuillConfig,$attrs) {
       var config = {},
           content,
           editorElem,
@@ -105,8 +106,6 @@
           editor;
 
       var isNotToolbar = $element[0].hasAttribute("no-tool-bar");
-      var isMention = $element[0].hasAttribute("mention");
-
       this.validate = function (text) {
         if (this.maxLength) {
           if (text.length > this.maxLength + 1) {
@@ -128,12 +127,25 @@
 
       this.$onChanges = function (changes) {
         if (changes.ngModel && changes.ngModel.currentValue !== changes.ngModel.previousValue) {
-          content = changes.ngModel.currentValue
-
+          content = changes.ngModel.currentValue;
           if (editor && !editorChanged) {
             modelChanged = true
             if (content) {
-              editor.pasteHTML(content)
+              let table_id = TableTrick.random_id();
+              let row_id = TableTrick.random_id();      
+              editor.clipboard.addMatcher('TABLE', function(node, delta) {
+                table_id = TableTrick.random_id();
+                return delta;
+              });
+              editor.clipboard.addMatcher('TR', function(node, delta) {
+                row_id = TableTrick.random_id();
+                return delta;
+              });
+              editor.clipboard.addMatcher('TD', function(node, delta) {
+                let cell_id = TableTrick.random_id();
+                return delta.compose(new Delta().retain(delta.length(), { td: table_id+'|'+row_id+'|'+cell_id }));
+              });
+              editor.clipboard.dangerouslyPasteHTML(content);
             } else {
               editor.setText('')
             }
@@ -167,9 +179,8 @@
       this._initEditor = function (editorElem) {
         var $editorElem = angular.element('<div></div>'),
           container = $element.children()
-
-        editorElem = $editorElem[0]
-
+        editorElem = $editorElem[0];
+       
         // set toolbar to custom one
         if ($transclude.isSlotFilled('toolbar')) {
           config.modules.toolbar = container.find('ng-quill-toolbar').children()[0]
@@ -179,29 +190,26 @@
           config.modules.toolbar = false;
         }
 
-        if (isMention) {
-          console.warn(config.modules.mentions);
-          let userList= $scope.$parent.userList;
-          config.modules.mentions.users = $scope.$parent.userList;
-          console.warn(userList);
-        }
-
         container.append($editorElem);
 
         editor = new Quill(editorElem, config)
 
-        this.ready = true
+        this.ready = true;
+        let modelData= this.ngModelCtrl.$viewValue;
+        editorElem.children[0].innerHTML= '' 
+        editor.clipboard.dangerouslyPasteHTML(modelData);
 
         // mark model as touched if editor lost focus
         editor.on('selection-change', function (range, oldRange, source) {
-          if (this.onSelectionChanged) {
-            this.onSelectionChanged({
-              editor: editor,
-              oldRange: oldRange,
-              range: range,
-              source: source
-            })
-          }
+          let modelData= this.ngModelCtrl.$viewValue;
+          // if (this.onSelectionChanged) {
+          //   this.onSelectionChanged({
+          //     editor: editor,
+          //     oldRange: oldRange,
+          //     range: range,
+          //     source: source
+          //   })
+          // }
 
           if (range) {
             return
@@ -214,8 +222,9 @@
         // update model if text changes
         editor.on('text-change', function (delta, oldDelta, source) {
           var html = editorElem.children[0].innerHTML
+          
           var text = editor.getText()
-
+          console.log(html);
           if (html === '<p><br></p>') {
             html = null
           }
@@ -228,14 +237,20 @@
               this.ngModelCtrl.$setViewValue(html)
 
               if (this.onContentChanged) {
-                this.onContentChanged({
-                  editor: editor,
-                  html: html,
-                  text: text,
-                  delta: delta,
-                  oldDelta: oldDelta,
-                  source: source
-                })
+
+                // this.onContentChanged({
+                //   editor: editor,
+                //   html: html,
+                //   text: text,
+                //   delta: delta,
+                //   oldDelta: oldDelta,
+                //   source: source
+                // })
+              // if(dede){
+              //   var test= $scope.$parent.briefVm.currentBrief.description;
+              //   editorElem.children[0].innerHTML= '' 
+              //   editor.clipboard.dangerouslyPasteHTML(0, test);
+              // }
               }
             }.bind(this))
           }
@@ -244,9 +259,8 @@
 
         // set initial content
         if (content) {
-          modelChanged = true
-
-          editor.pasteHTML(content)
+          modelChanged = true;
+          editor.clipboard.dangerouslyPasteHTML(content);
         }
 
         // provide event to get informed when editor is created -> pass editor object.
